@@ -8,11 +8,15 @@ class SampledPathData {
   var points2;
   var endIndices;
   var shiftedPoints;
+  bool points1IsClosed;
+  bool points2IsClosed;
 
   SampledPathData() {
     points1 = List<Offset>();
     points2 = List<Offset>();
     shiftedPoints = List<Offset>();
     endIndices = List<int>();
+    points1IsClosed = false;
+    points2IsClosed = false;
   }
 }
