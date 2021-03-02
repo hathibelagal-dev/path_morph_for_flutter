@@ -27,7 +27,46 @@ class PathMorph {
             .add(metric.getTangentForOffset(metric.length * i).position);
       }
     });
+
+    /// If path1 and path2 are closed, the points1 offsets are rotated one at a
+    /// time to calculate sum of squared distances. Consequently, the same
+    /// process is repeated for reversed points1 order.
+    /// This way we can find more optimal pairs of points for smoother morphing.
+    data.points1IsClosed = data.points1.first == data.points1.last ? true : false;
+    data.points2IsClosed = data.points2.first == data.points2.last ? true : false;
+    if(data.points1IsClosed && data.points2IsClosed) {
+      double minSumDistSqrd = double.infinity;
+      int optimalIndex;
+      bool isReversed;
+      for (int reversed = 0; reversed <= 1; reversed++) {
+        if (reversed == 1) {
+          data.points1 = List.from(data.points1.reversed);
+        }
+        for (int shiftIndex = 0; shiftIndex < data.points1.length; shiftIndex++) {
+          double sumDistSqrd = 0;
+          for (int pointIndex = 0; pointIndex < data.points1.length; pointIndex++) {
+            sumDistSqrd += (data.points1[pointIndex] - data.points2[pointIndex]).distanceSquared;
+          }
+          if (sumDistSqrd < minSumDistSqrd) {
+            minSumDistSqrd = sumDistSqrd;
+            optimalIndex = shiftIndex;
+            isReversed = reversed == 1 ? true : false;
+          }
+          data.points1 = _shiftList(data.points1, 1);
+        }
+      }
+      data.points1 = _shiftList(data.points1, optimalIndex);
+      data.points1 =
+      isReversed ? data.points1 : List.from(data.points1.reversed);
+    }
     return data;
+  }
+
+  /// shift list by offset v
+  static List<Object> _shiftList(List<Object> list, int v) {
+    if(list == null || list.isEmpty) return list;
+    var i = v % list.length;
+    return list.sublist(i)..addAll(list.sublist(0, i));
   }
 
   /// Generates a bunch of animations that are responsible for moving
@@ -59,6 +98,7 @@ class PathMorph {
       }
       p.lineTo(data.shiftedPoints[i].dx, data.shiftedPoints[i].dy);
     }
+    if(data.points1IsClosed && data.points2IsClosed) {p.close();}
     return p;
   }
 }
