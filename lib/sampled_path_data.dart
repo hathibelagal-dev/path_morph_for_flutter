@@ -10,9 +10,9 @@ class SampledPathData {
   var shiftedPoints;
 
   SampledPathData() {
-    points1 = List<Offset>();
-    points2 = List<Offset>();
-    shiftedPoints = List<Offset>();
-    endIndices = List<int>();
+    points1 = <Offset>[];
+    points2 = <Offset>[];
+    shiftedPoints = <Offset>[];
+    endIndices = <int>[];
   }
 }

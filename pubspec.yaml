@@ -1,11 +1,10 @@
 name: path_morph
 description: This package lets you create path tween animations. In other words, it lets you morph one path into another.
 version: 1.0.1
-author: Ashraff Hathibelagal <hathi@progur.com>
 homepage: https://github.com/hathibelagal-dev/path_morph_for_flutter
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: '>=2.16.0 <3.0.0'
 
 dependencies:
   flutter:
