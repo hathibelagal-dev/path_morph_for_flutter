@@ -1,0 +1,29 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  errors:
+    missing_required_param: error
+    missing_return: error
+    todo: ignore
+    sdk_version_async_exported_from_core: ignore
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+  exclude:
+    - '**.g.dart'
+    - '**.config.dart'
+    - '**.mocks.dart'
+    - 'lib/util/license.dart'
+    - 'test/coverage_helper_test.dart'
+    - 'tool/'
+
+linter:
+  rules:
+    unawaited_futures: true
+    always_declare_return_types: true
+    unsafe_html: true
+    use_full_hex_values_for_flutter_colors: true
+    prefer_final_in_for_each: true
+    prefer_final_fields: true
+    prefer_final_locals: true
+    depend_on_referenced_packages: false
