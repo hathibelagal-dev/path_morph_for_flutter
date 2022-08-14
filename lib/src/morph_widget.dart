@@ -40,7 +40,7 @@ class MorphWidget extends StatefulWidget {
 
 class _MorphWidgetState extends State<MorphWidget> {
   late final _data = PathMorphUtils.samplePaths(widget.path1, widget.path2);
-  late final Map<int, Animation<Offset>> _animations;
+  late final _animations = <int, Animation<Offset>>{};
 
   @override
   void initState() {
@@ -57,8 +57,10 @@ class _MorphWidgetState extends State<MorphWidget> {
   }
 
   void _generateAnimations() {
-    _animations = PathMorphUtils.generateAnimations(widget.controller, _data);
-    _animations.forEach(_addAnimationListener);
+    _animations
+      ..clear()
+      ..addAll(PathMorphUtils.generateAnimations(widget.controller, _data))
+      ..forEach(_addAnimationListener);
   }
 
   void _addAnimationListener(int index, Animation<Offset> animation) {
