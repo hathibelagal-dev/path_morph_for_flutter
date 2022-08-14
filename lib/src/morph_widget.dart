@@ -45,6 +45,18 @@ class _MorphWidgetState extends State<MorphWidget> {
   @override
   void initState() {
     super.initState();
+    _generateAnimations();
+  }
+
+  @override
+  void didUpdateWidget(covariant MorphWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.path1 != oldWidget.path1 || widget.path2 != oldWidget.path2) {
+      _generateAnimations();
+    }
+  }
+
+  void _generateAnimations() {
     _animations = PathMorphUtils.generateAnimations(widget.controller, _data);
     _animations.forEach(_addAnimationListener);
   }
