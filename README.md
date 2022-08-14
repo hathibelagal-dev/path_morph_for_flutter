@@ -8,6 +8,8 @@ This is a package that lets you smoothly morph one Flutter `Path` object into an
 
 Use [path_drawing](https://pub.dev/packages/path_drawing) to transform svg's into paths!
 
+(see bottom of example)
+
 ## Important
 
 This package currently allows you to morph two paths only if they both have an equal number of contours. You can think of a contour as a line you can draw without lifting the pen. For example, the path to draw a triangle, a circle, or a square has one contour only. But a path to draw two concentric circles will have two contours.
