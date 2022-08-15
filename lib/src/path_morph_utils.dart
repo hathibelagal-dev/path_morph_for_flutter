@@ -1,5 +1,6 @@
 import 'package:flutter/animation.dart';
 import 'package:flutter/rendering.dart';
+import 'package:path_morph/src/different_contours_morph_error.dart';
 import 'package:path_morph/src/sampled_path_data.dart';
 
 typedef UpdatePointCallback = void Function(int i, Offset z);
@@ -79,15 +80,29 @@ class PathMorphUtils {
   /// Generates a bunch of animations that are responsible for moving
   /// all the points of paths into the right positions.
   static Map<int, Animation<Offset>> generateAnimations(AnimationController controller, SampledPathData data) {
-    final animations = <int, Animation<Offset>>{};
-    for (var i = 0; i < data.points1.length; i++) {
-      final start = data.points1[i];
-      final end = data.points2[i];
-      final tween = Tween(begin: start, end: end);
-      final animation = tween.animate(controller);
-      animations.addAll({i: animation});
+    try {
+      final animations = <int, Animation<Offset>>{};
+      for (var i = 0; i < data.points1.length; i++) {
+        final start = data.points1[i];
+        final end = data.points2[i];
+        final tween = Tween(begin: start, end: end);
+        final animation = tween.animate(controller);
+        animations.addAll({i: animation});
+      }
+      return animations;
+    } catch (e) {
+      if (e is IndexError) {
+        throw DifferentContoursMorphError("""Countours don't match!
+ This package currently allows you to morph two paths only if
+ they both have an equal number of contours. You can think of
+ a contour as a line you can draw without lifting the pen.
+
+ For example, the path to draw a triangle, a circle, or a square
+ has one contour only. But a path to draw two concentric circles
+ will have two contours.""");
+      }
+      rethrow;
     }
-    return animations;
   }
 
   /// Generates a path using the [SampledPathData] object.

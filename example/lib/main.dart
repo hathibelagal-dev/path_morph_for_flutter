@@ -24,6 +24,7 @@ class _MyApp extends State<MyApp> with SingleTickerProviderStateMixin {
     ..lineTo(180, 150)
     ..lineTo(250, 190)
     ..lineTo(250, 250);
+
   late final _controller = AnimationController(vsync: this, duration: const Duration(seconds: 1));
 
   @override
