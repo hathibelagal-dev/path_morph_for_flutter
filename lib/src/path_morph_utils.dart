@@ -10,12 +10,14 @@ class PathMorphUtils {
   /// This method is responsible for sampling both the paths. It generates a
   /// [SampledPathData] object containing all the details required for the
   /// morph animation.
-  static SampledPathData samplePaths(Path path1, Path path2, {double precision = 0.01}) {
+  static SampledPathData samplePaths(Path path1, Path path2,
+      {double precision = 0.01}) {
     final data = SampledPathData();
     var k = 0;
     path1.computeMetrics().forEach((metric) {
       for (var i = 0.0; i < 1.1; i += precision) {
-        final position = metric.getTangentForOffset(metric.length * i)?.position;
+        final position =
+            metric.getTangentForOffset(metric.length * i)?.position;
         if (position == null) continue;
         data.points1.add(position);
         data.shiftedPoints.add(position);
@@ -25,7 +27,8 @@ class PathMorphUtils {
       data.endIndices.add(k);
       for (var i = 0.0; i < 1.1; i += precision) {
         k += 1;
-        final position = metric.getTangentForOffset(metric.length * i)?.position;
+        final position =
+            metric.getTangentForOffset(metric.length * i)?.position;
         if (position == null) continue;
         data.points2.add(position);
       }
@@ -35,8 +38,10 @@ class PathMorphUtils {
     // time to calculate sum of squared distances. Consequently, the same
     // process is repeated for reversed points1 order.
     // This way we can find more optimal pairs of points for smoother morphing.
-    data.points1IsClosed = data.points1.first == data.points1.last ? true : false;
-    data.points2IsClosed = data.points2.first == data.points2.last ? true : false;
+    data.points1IsClosed =
+        data.points1.first == data.points1.last ? true : false;
+    data.points2IsClosed =
+        data.points2.first == data.points2.last ? true : false;
     if (data.points1IsClosed && data.points2IsClosed) {
       var minSumDistSqrd = double.infinity;
       int? optimalIndex;
@@ -47,10 +52,15 @@ class PathMorphUtils {
             ..clear()
             ..addAll(data.points1.reversed);
         }
-        for (int shiftIndex = 0; shiftIndex < data.points1.length; shiftIndex++) {
+        for (int shiftIndex = 0;
+            shiftIndex < data.points1.length;
+            shiftIndex++) {
           double sumDistSqrd = 0;
-          for (int pointIndex = 0; pointIndex < data.points1.length; pointIndex++) {
-            sumDistSqrd += (data.points1[pointIndex] - data.points2[pointIndex]).distanceSquared;
+          for (int pointIndex = 0;
+              pointIndex < data.points1.length;
+              pointIndex++) {
+            sumDistSqrd += (data.points1[pointIndex] - data.points2[pointIndex])
+                .distanceSquared;
           }
           if (sumDistSqrd < minSumDistSqrd) {
             minSumDistSqrd = sumDistSqrd;
@@ -79,7 +89,8 @@ class PathMorphUtils {
 
   /// Generates a bunch of animations that are responsible for moving
   /// all the points of paths into the right positions.
-  static Map<int, Animation<Offset>> generateAnimations(AnimationController controller, SampledPathData data) {
+  static Map<int, Animation<Offset>> generateAnimations(
+      AnimationController controller, SampledPathData data) {
     try {
       final animations = <int, Animation<Offset>>{};
       for (var i = 0; i < data.points1.length; i++) {
