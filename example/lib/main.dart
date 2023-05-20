@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:path_morph/path_morph.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _MyApp();
@@ -11,9 +13,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyApp extends State<MyApp> with SingleTickerProviderStateMixin {
-
-  SampledPathData data;
-  AnimationController controller;
+  late SampledPathData data;
+  late AnimationController controller;
 
   @override
   void initState() {
@@ -24,23 +25,24 @@ class _MyApp extends State<MyApp> with SingleTickerProviderStateMixin {
 
     data = PathMorph.samplePaths(path1, path2);
 
-    controller = AnimationController(vsync: this,
-        duration: Duration(seconds: 1));
+    controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
 
     PathMorph.generateAnimations(controller, data, func);
 
     controller.addStatusListener((status) {
-      if(status == AnimationStatus.completed)
+      if (status == AnimationStatus.completed) {
         controller.reverse();
-      else if(status == AnimationStatus.dismissed)
+      } else if (status == AnimationStatus.dismissed) {
         controller.forward();
+      }
     });
 
     controller.forward();
   }
 
   void func(int i, Offset z) {
-    setState((){
+    setState(() {
       data.shiftedPoints[i] = z;
     });
   }
@@ -52,13 +54,12 @@ class _MyApp extends State<MyApp> with SingleTickerProviderStateMixin {
 }
 
 class MyPainter extends CustomPainter {
-
   Path path;
-  var myPaint;
+  late Paint myPaint;
 
   MyPainter(this.path) {
     myPaint = Paint();
-    myPaint.color = Color.fromRGBO(255, 0, 0, 1.0);
+    myPaint.color = const Color.fromRGBO(255, 0, 0, 1.0);
     myPaint.style = PaintingStyle.stroke;
     myPaint.strokeWidth = 3.0;
   }
@@ -75,18 +76,19 @@ class MyPainter extends CustomPainter {
 * These are some very simple paths for the sake of an example only.
 */
 Path createPath1() {
-    return Path()
-        ..moveTo(60,200)
-        ..lineTo(60,150)
-        ..lineTo(200,150)
-        ..lineTo(200,200);
+  return Path()
+    ..moveTo(60, 200)
+    ..lineTo(60, 150)
+    ..lineTo(200, 150)
+    ..lineTo(200, 200);
 }
+
 Path createPath2() {
-    return Path()
-        ..moveTo(60,200)
-        ..lineTo(90,150)
-        ..lineTo(150,100)
-        ..lineTo(180,150)
-        ..lineTo(250,190)
-        ..lineTo(250,250);
+  return Path()
+    ..moveTo(60, 200)
+    ..lineTo(90, 150)
+    ..lineTo(150, 100)
+    ..lineTo(180, 150)
+    ..lineTo(250, 190)
+    ..lineTo(250, 250);
 }

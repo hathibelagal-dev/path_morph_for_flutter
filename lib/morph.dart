@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/rendering.dart';
 import 'package:flutter/animation.dart';
 import './sampled_path_data.dart';
@@ -13,8 +15,9 @@ class PathMorph {
     var k = 0;
     path1.computeMetrics().forEach((metric) {
       for (var i = 0.0; i < 1.1; i += precision) {
-        Offset position =
-            metric.getTangentForOffset(metric.length * i).position;
+        Tangent? tangent = metric.getTangentForOffset(metric.length * i);
+        if (tangent == null) continue;
+        Offset position = tangent.position;
         data.points1.add(position);
         data.shiftedPoints.add(position);
       }
@@ -22,9 +25,10 @@ class PathMorph {
     path2.computeMetrics().forEach((metric) {
       data.endIndices.add(k);
       for (var i = 0.0; i < 1.1; i += precision) {
+        Tangent? tangent = metric.getTangentForOffset(metric.length * i);
+        if (tangent == null) continue;
         k += 1;
-        data.points2
-            .add(metric.getTangentForOffset(metric.length * i).position);
+        data.points2.add(tangent.position);
       }
     });
     return data;
