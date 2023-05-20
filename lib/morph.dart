@@ -1,6 +1,4 @@
 import 'dart:ui';
-
-import 'package:flutter/rendering.dart';
 import 'package:flutter/animation.dart';
 import './sampled_path_data.dart';
 
